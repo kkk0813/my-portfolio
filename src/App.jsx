@@ -109,6 +109,28 @@ const GlobalStyles = () => (
       border-bottom: 1px solid rgba(0,255,157,0.1);
     }
 
+    /* Desktop nav links */
+    .nav-links { display:flex; gap:24px; }
+
+    /* Hamburger — hidden on desktop */
+    .ham-btn { display:none; }
+
+    /* Mobile dropdown — hidden by default always */
+    .nav-mobile {
+      display: none;
+    }
+    .nav-mobile.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 54px; left: 0; right: 0;
+      background: rgba(4,4,10,.97);
+      border-bottom: 1px solid rgba(0,255,157,.15);
+      padding: 16px 24px;
+      gap: 18px;
+      z-index: 199;
+    }
+
     /* Buttons */
     .btn-g, .btn-c {
       font-family: var(--mono); font-size:.82rem;
@@ -196,13 +218,6 @@ const GlobalStyles = () => (
       .section-pad { padding:64px 16px; }
       .peek-card { display:none !important; }
       .nav-links { display:none; }
-      .nav-links.open {
-        display:flex; flex-direction:column;
-        position:absolute; top:54px; left:0; right:0;
-        background:rgba(4,4,10,.97);
-        border-bottom:1px solid rgba(0,255,157,.15);
-        padding:16px 24px; gap:18px;
-      }
       .ham-btn { display:flex; }
       .corner-tl, .corner-tr, .corner-bl, .corner-br { width:28px !important; height:28px !important; }
       .corner-tl, .corner-tr { top:62px !important; }
@@ -382,7 +397,7 @@ function Nav({ active }) {
     paddingBottom: 2, transition: "color .2s, border-color .2s",
   });
   return (
-    <nav style={{ position: "relative" }}>
+    <nav>
       <div style={{ maxWidth:1080, margin:"0 auto", padding:"0 24px", display:"flex", justifyContent:"space-between", alignItems:"center", height:54 }}>
         <span style={{ fontFamily:"var(--head)", color:"var(--green)", fontSize:".9rem", letterSpacing:".18em", textShadow:"0 0 10px rgba(0,255,157,.45)" }}>
           KK<span style={{ color:"var(--red)" }}>.</span>DEV
@@ -400,8 +415,8 @@ function Nav({ active }) {
           {[0,1,2].map(i => <span key={i} style={{ display:"block", width:18, height:2, background: open ? "var(--red)" : "var(--green)", transition:"background .2s" }} />)}
         </button>
       </div>
-      {/* Mobile dropdown */}
-      <div className={`nav-links${open ? " open" : ""}`}>
+      {/* Mobile dropdown — uses nav-mobile class, never shows on desktop */}
+      <div className={`nav-mobile${open ? " open" : ""}`}>
         {NAV_IDS.map(id => <button key={id} onClick={() => go(id)} style={linkStyle(id)}>{id}</button>)}
       </div>
     </nav>
