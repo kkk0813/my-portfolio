@@ -159,6 +159,22 @@ const GlobalStyles = () => (
       box-shadow: 0 0 18px rgba(0,212,255,.3);
     }
 
+    /* Amber / CV button */
+    .btn-a {
+      font-family: var(--mono); font-size:.82rem;
+      letter-spacing:.1em; cursor:pointer;
+      padding: 10px 26px; border-radius: 2px;
+      transition: all .22s;
+      background: transparent;
+      border: 1px solid rgba(255,184,0,.5);
+      color: var(--amber);
+    }
+    .btn-a:hover {
+      background: rgba(255,184,0,.1);
+      border-color: var(--amber);
+      box-shadow: 0 0 18px rgba(255,184,0,.3);
+    }
+
     /* Skill tag */
     .stag {
       font-family: var(--mono); font-size:.72rem;
@@ -250,7 +266,7 @@ const PROJECTS = [
     color: "#00ff9d",
     desc: "Lightweight HTTP honeypot built with Flask & SQLite, simulating IoT attack surfaces. Features an Active Defense Loop (IPS simulation), Kill Chain Visualization mapped to MITRE ATT&CK stages, and a Noise vs Signal Challenge mode for student security training.",
     tech: ["Python", "Flask", "SQLite", "Jinja2", "Tailwind", "Kali Linux", "MITRE ATT&CK"],
-    github: "#",
+    github: "https://github.com/kkk0813/HTTP_IoT_Honeypot",
   },
   {
     tag: "SIDE PROJECT",
@@ -260,7 +276,7 @@ const PROJECTS = [
     color: "#ffb800",
     desc: "Modular 6-file Python backtesting engine for crypto trading strategies. Implements RSI + Volume Spike + Candlestick Wick logic, 4 named strategy presets, grid search optimisation, and a tkinter GUI for interactive visual analysis.",
     tech: ["Python", "yfinance", "tkinter", "Pandas", "NumPy"],
-    github: "#",
+    github: "https://github.com/kkk0813/btc-strategy-backtester",
   },
   {
     tag: "SIDE PROJECT",
@@ -270,27 +286,27 @@ const PROJECTS = [
     color: "#b44fff",
     desc: "A local Spotify-like streaming server for personal osu! music libraries. Built with a modern Python stack — FastAPI serves audio streams via dynamic endpoints, uv manages dependencies, and a vanilla HTML/JS frontend handles client-side search without any database overhead.",
     tech: ["Python", "FastAPI", "uvicorn", "uv", "Docker", "HTML/JS"],
-    github: "#",
+    github: "https://github.com/kkk0813/SonicUV",
   },
   {
     tag: "COURSEWORK // IBM4202",
-    status: "DEPLOYED",
+    status: "COMPLETE",
     title: "Agrimarket Web Platform",
     Icon: ShoppingBag,
     color: "#00d4ff",
     desc: "Full-stack agricultural marketplace connecting vendors with customers, featuring role-based dashboards for Admin, Staff, Vendor, and Customer. Includes cart & checkout, order tracking, refund requests, subscription plans, and an analytics dashboard.",
     tech: ["PHP", "MySQL", "jQuery", "PHPMailer", "PDO", "XAMPP"],
-    github: "#",
+    github: "https://github.com/kkk0813/Agrimarket",
   },
   {
     tag: "COURSEWORK",
-    status: "DEPLOYED",
+    status: "COMPLETE",
     title: "TaskHub Web App",
     Icon: Globe,
     color: "#ff3864",
     desc: "PHP-based task management platform with user authentication, full CRUD operations, and a clean MVC-like architecture. Structured for clean GitHub presentation with secure credential handling.",
     tech: ["PHP", "MySQL", "HTML/CSS", "JavaScript"],
-    github: "#",
+    github: "https://github.com/kkk0813/TaskHub_ToDoList-App",
   },
 ];
 
@@ -300,14 +316,14 @@ const CTF_PLATFORMS = [
     name: "picoCTF",
     color: "#00ff9d",
     desc: "Gamified challenges covering web exploitation, binary analysis, reverse engineering, cryptography, and general security scripting.",
-    href: "#",
+    href: "https://github.com/kkk0813/CTF-Writeups/blob/main/PICO_CTF_INDEX.md",
   },
   {
     Icon: Terminal,
     name: "PortSwigger Web Academy",
     color: "#00d4ff",
     desc: "Real-world web vulnerabilities manually exploited using Burp Suite — SQL injection, XSS, SSRF, authentication bypasses, and more.",
-    href: "#",
+    href: "https://github.com/kkk0813/CTF-Writeups/blob/main/PORTSWIGGER_INDEX.md",
   },
 ];
 
@@ -316,6 +332,7 @@ const SKILLS = {
   "Languages": ["Python", "PHP", "JavaScript", "SQL", "HTML/CSS", "Bash"],
   "Frameworks & Tools": ["Flask", "FastAPI", "React", "Tailwind CSS", "Docker", "uv", "jQuery"],
   "Databases & Infra": ["SQLite", "MySQL", "PDO", "XAMPP", "Git", "GitHub"],
+  "Certifications": ["CCNA: Switching, Routing & Wireless", "CCNA: Enterprise Networking, Security & Automation"],
 };
 
 const INTERESTS = [
@@ -456,6 +473,9 @@ function Hero() {
 
         <div className="fu fu-5" style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
           <button className="btn-g" onClick={() => go("projects")}>&gt;&nbsp;VIEW_PROJECTS</button>
+          <a href="/resume.pdf" download style={{ textDecoration:"none" }}>
+            <button className="btn-a">&gt;&nbsp;DOWNLOAD_CV</button>
+          </a>
           <button className="btn-c" onClick={() => go("contact")}>&gt;&nbsp;CONNECT</button>
         </div>
       </div>
@@ -740,13 +760,15 @@ function CTF() {
 }
 
 function Skills() {
+  const regularSkills = Object.entries(SKILLS).filter(([cat]) => cat !== "Certifications");
+  const certs = SKILLS["Certifications"];
   return (
     <section id="skills" className="section-pad" style={{ background:"rgba(0,255,157,.018)" }}>
       <div style={{ maxWidth:1080, margin:"0 auto" }}>
         <SectionLabel num="04" title="TECH STACK" accent="STACK" />
 
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:36 }}>
-          {Object.entries(SKILLS).map(([cat, list], i) => (
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:36, marginBottom:44 }}>
+          {regularSkills.map(([cat, list], i) => (
             <div key={cat} className={`reveal delay-${i+1}`}>
               <div style={{ fontFamily:"var(--mono)", color:"var(--green)", fontSize:".75rem", letterSpacing:".14em", marginBottom:14, borderLeft:"2px solid var(--green)", paddingLeft:10 }}>
                 &gt;&nbsp;{cat.toUpperCase()}
@@ -756,6 +778,28 @@ function Skills() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Certifications row */}
+        <div className="reveal delay-3" style={{ borderTop:"1px solid rgba(0,255,157,.1)", paddingTop:32 }}>
+          <div style={{ fontFamily:"var(--mono)", color:"var(--amber)", fontSize:".75rem", letterSpacing:".14em", marginBottom:16, borderLeft:"2px solid var(--amber)", paddingLeft:10 }}>
+            &gt;&nbsp;CERTIFICATIONS
+          </div>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:12 }}>
+            {certs.map(c => (
+              <div key={c} style={{
+                display:"flex", alignItems:"center", gap:10,
+                padding:"10px 18px",
+                border:"1px solid rgba(255,184,0,.3)",
+                background:"rgba(255,184,0,.05)",
+                borderRadius:3, fontFamily:"var(--mono)", fontSize:".78rem",
+                color:"var(--amber)",
+              }}>
+                <span style={{ color:"var(--amber)", fontSize:".85rem" }}>✦</span>
+                {c}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
