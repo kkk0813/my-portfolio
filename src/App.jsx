@@ -182,6 +182,39 @@ const GlobalStyles = () => (
       50% { border-color: rgba(0,255,157,.55); box-shadow: 0 0 20px rgba(0,255,157,.2); }
     }
     .pulse { animation: pulseBorder 3s ease-in-out infinite; }
+
+    /* ── Layout helpers ── */
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+    .section-pad { padding:96px 24px; }
+    .nav-links { display:flex; gap:24px; }
+    .ham-btn { display:none; }
+    .peek-card { display:flex; }
+
+    /* ── Tablet / mobile (≤ 768px) ── */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns:1fr; }
+      .section-pad { padding:64px 16px; }
+      .peek-card { display:none !important; }
+      .nav-links { display:none; }
+      .nav-links.open {
+        display:flex; flex-direction:column;
+        position:absolute; top:54px; left:0; right:0;
+        background:rgba(4,4,10,.97);
+        border-bottom:1px solid rgba(0,255,157,.15);
+        padding:16px 24px; gap:18px;
+      }
+      .ham-btn { display:flex; }
+      .corner-tl, .corner-tr, .corner-bl, .corner-br { width:28px !important; height:28px !important; }
+      .corner-tl, .corner-tr { top:62px !important; }
+      .corner-tl, .corner-bl { left:14px !important; }
+      .corner-tr, .corner-br { right:14px !important; }
+    }
+
+    /* ── Small phones (≤ 480px) ── */
+    @media (max-width: 480px) {
+      .section-pad { padding:48px 14px; }
+      .btn-g, .btn-c { padding:9px 16px; font-size:.76rem; }
+    }
   `}</style>
 );
 
@@ -335,28 +368,41 @@ function useActiveSection(ids) {
 const NAV_IDS = ["home", "about", "projects", "ctf", "skills", "contact"];
 
 function Nav({ active }) {
-  const go = id => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const [open, setOpen] = useState(false);
+  const go = id => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setOpen(false);
+  };
+  const linkStyle = (id) => ({
+    background: "none", border: "none", cursor: "pointer",
+    fontFamily: "var(--mono)", fontSize: ".72rem", letterSpacing: ".12em",
+    textTransform: "uppercase", textAlign: "left",
+    color: active === id ? "var(--green)" : "rgba(224,224,224,.4)",
+    borderBottom: active === id ? "1px solid var(--green)" : "1px solid transparent",
+    paddingBottom: 2, transition: "color .2s, border-color .2s",
+  });
   return (
-    <nav>
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 24px", display: "flex", justifyContent: "space-between", alignItems: "center", height: 54 }}>
-        <span style={{ fontFamily: "var(--head)", color: "var(--green)", fontSize: ".9rem", letterSpacing: ".18em", textShadow: "0 0 10px rgba(0,255,157,.45)" }}>
-          KK<span style={{ color: "var(--red)" }}>.</span>DEV
+    <nav style={{ position: "relative" }}>
+      <div style={{ maxWidth:1080, margin:"0 auto", padding:"0 24px", display:"flex", justifyContent:"space-between", alignItems:"center", height:54 }}>
+        <span style={{ fontFamily:"var(--head)", color:"var(--green)", fontSize:".9rem", letterSpacing:".18em", textShadow:"0 0 10px rgba(0,255,157,.45)" }}>
+          KK<span style={{ color:"var(--red)" }}>.</span>DEV
         </span>
-        <div style={{ display: "flex", gap: 24 }}>
-          {NAV_IDS.map(id => (
-            <button key={id} onClick={() => go(id)} style={{
-              background: "none", border: "none", cursor: "pointer",
-              fontFamily: "var(--mono)", fontSize: ".72rem", letterSpacing: ".12em",
-              textTransform: "uppercase",
-              color: active === id ? "var(--green)" : "rgba(224,224,224,.4)",
-              borderBottom: active === id ? "1px solid var(--green)" : "1px solid transparent",
-              paddingBottom: 2,
-              transition: "color .2s, border-color .2s",
-            }}>
-              {id}
-            </button>
-          ))}
+        {/* Desktop links */}
+        <div className="nav-links">
+          {NAV_IDS.map(id => <button key={id} onClick={() => go(id)} style={linkStyle(id)}>{id}</button>)}
         </div>
+        {/* Hamburger — mobile only */}
+        <button className="ham-btn" onClick={() => setOpen(o => !o)} style={{
+          background:"none", border:"1px solid rgba(0,255,157,.3)", borderRadius:3,
+          cursor:"pointer", padding:"6px 8px", gap:4,
+          flexDirection:"column", alignItems:"center", justifyContent:"center",
+        }}>
+          {[0,1,2].map(i => <span key={i} style={{ display:"block", width:18, height:2, background: open ? "var(--red)" : "var(--green)", transition:"background .2s" }} />)}
+        </button>
+      </div>
+      {/* Mobile dropdown */}
+      <div className={`nav-links${open ? " open" : ""}`}>
+        {NAV_IDS.map(id => <button key={id} onClick={() => go(id)} style={linkStyle(id)}>{id}</button>)}
       </div>
     </nav>
   );
@@ -419,10 +465,10 @@ function SectionLabel({ num, title, accent }) {
 
 function About() {
   return (
-    <section id="about" style={{ padding: "96px 24px", maxWidth: 1080, margin: "0 auto" }}>
+    <section id="about" className="section-pad" style={{ maxWidth: 1080, margin: "0 auto" }}>
       <SectionLabel num="01" title={`ABOUT ME`} accent="ME" />
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 }}>
+      <div className="about-grid">
         {/* Terminal card — text-align left fix */}
         <div className="term reveal">
           <div className="term-head">
@@ -494,7 +540,7 @@ function Projects() {
   const nextIdx = (idx + 1) % total;
 
   return (
-    <section id="projects" style={{ padding:"96px 24px", background:"rgba(0,255,157,.018)", overflow:"hidden" }}>
+    <section id="projects" className="section-pad" style={{ background:"rgba(0,255,157,.018)", overflow:"hidden" }}>
       <div style={{ maxWidth:1080, margin:"0 auto" }}>
         <SectionLabel num="02" title="PROJECTS" accent="ECTS" />
 
@@ -530,7 +576,7 @@ function Projects() {
           >‹</button>
 
           {/* Peek prev */}
-          <div style={{
+          <div className="peek-card" style={{
             flexShrink:0, width:200, opacity:.3, transform:"scale(0.92) translateX(12px)",
             transition:"all .25s", pointerEvents:"none", display:"flex", flexDirection:"column",
             overflow:"hidden", borderRadius:6,
@@ -590,7 +636,7 @@ function Projects() {
           </div>
 
           {/* Peek next */}
-          <div style={{
+          <div className="peek-card" style={{
             flexShrink:0, width:200, opacity:.3, transform:"scale(0.92) translateX(-12px)",
             transition:"all .25s", pointerEvents:"none", display:"flex", flexDirection:"column",
             overflow:"hidden", borderRadius:6,
@@ -626,7 +672,7 @@ function Projects() {
 
 function CTF() {
   return (
-    <section id="ctf" style={{ padding:"96px 24px", maxWidth:1080, margin:"0 auto" }}>
+    <section id="ctf" className="section-pad" style={{ maxWidth:1080, margin:"0 auto" }}>
       <SectionLabel num="03" title="SECURITY LAB" accent="LAB" />
 
       <p className="reveal" style={{ color:"rgba(224,224,224,.5)", fontFamily:"var(--mono)", fontSize:".82rem", marginBottom:32, borderLeft:"2px solid rgba(0,255,157,.3)", paddingLeft:14 }}>
@@ -670,7 +716,7 @@ function CTF() {
       {/* Tools used row */}
       <div className="reveal delay-3" style={{ padding:"16px 20px", border:"1px solid rgba(0,255,157,.1)", borderRadius:4, background:"rgba(0,255,157,.02)", display:"flex", alignItems:"center", gap:16, flexWrap:"wrap" }}>
         <span style={{ fontFamily:"var(--mono)", color:"rgba(0,255,157,.5)", fontSize:".72rem", letterSpacing:".14em", flexShrink:0 }}>&gt; TOOLS_USED:</span>
-        {["Burp Suite", "Kali Linux", "Wireshark", "nmap", "Python scripting", "Bash"].map(t => (
+        {["Burp Suite", "Kali Linux", "Wireshark", "nmap", "Python scripting"].map(t => (
           <span key={t} className="stag">{t}</span>
         ))}
       </div>
@@ -680,7 +726,7 @@ function CTF() {
 
 function Skills() {
   return (
-    <section id="skills" style={{ padding:"96px 24px", background:"rgba(0,255,157,.018)" }}>
+    <section id="skills" className="section-pad" style={{ background:"rgba(0,255,157,.018)" }}>
       <div style={{ maxWidth:1080, margin:"0 auto" }}>
         <SectionLabel num="04" title="TECH STACK" accent="STACK" />
 
@@ -705,10 +751,10 @@ function Contact() {
   const links = [
     { Icon: Github,   label: "GITHUB",   href: "https://github.com/kkk0813" },
     { Icon: Linkedin, label: "LINKEDIN", href: "https://www.linkedin.com/in/khong-kok-kin-45495b37b/" },
-    { Icon: Mail,     label: "EMAIL",    href: "https://mail.google.com/mail/?view=cm&to=khongkokkin0@gmail.com" },
+    { Icon: Mail,     label: "EMAIL",    href: "mailto:khongkokkin0@gmail.com" },
   ];
   return (
-    <section id="contact" style={{ padding:"96px 24px", background:"rgba(0,255,157,.018)" }}>
+    <section id="contact" className="section-pad" style={{ background:"rgba(0,255,157,.018)" }}>
       <div style={{ maxWidth:560, margin:"0 auto", textAlign:"center" }}>
         <SectionLabel num="05" title="GET IN TOUCH" accent="TOUCH" />
 
@@ -719,7 +765,7 @@ function Contact() {
           <p style={{ color:"rgba(224,224,224,.65)", fontSize:"1rem", lineHeight:1.75, marginBottom:24 }}>
             Final year CS student targeting SWE &amp; Network Security internships. Let's connect and build something great together.
           </p>
-          <a href="https://mail.google.com/mail/?view=cm&to=khongkokkin0@gmail.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration:"none" }}>
+          <a href="mailto:khongkokkin0@gmail.com" style={{ textDecoration:"none" }}>
             <button className="btn-g" style={{ width:"100%" }}>&gt;&nbsp;SEND_MESSAGE</button>
           </a>
         </div>
@@ -729,12 +775,12 @@ function Contact() {
             <a key={label} href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration:"none" }}>
               <div style={{
                 display:"flex", flexDirection:"column", alignItems:"center", gap:8,
-                color:"rgb(228, 247, 106)", padding:"14px 20px",
-                border:"1px solid rgba(0, 255, 157, 0.17)", borderRadius:4, minWidth:82,
+                color:"rgba(224,224,224,.4)", padding:"14px 20px",
+                border:"1px solid rgba(0,255,157,.12)", borderRadius:4, minWidth:82,
                 transition:"all .22s", cursor:"pointer",
               }}
               onMouseEnter={e => { e.currentTarget.style.color="var(--green)"; e.currentTarget.style.borderColor="rgba(0,255,157,.45)"; e.currentTarget.style.boxShadow="0 0 14px rgba(0,255,157,.2)"; }}
-              onMouseLeave={e => { e.currentTarget.style.color="rgb(228, 247, 106)"; e.currentTarget.style.borderColor="rgba(0, 255, 157, 0.17)"; e.currentTarget.style.boxShadow="none"; }}
+              onMouseLeave={e => { e.currentTarget.style.color="rgba(224,224,224,.4)"; e.currentTarget.style.borderColor="rgba(0,255,157,.12)"; e.currentTarget.style.boxShadow="none"; }}
               >
                 <Icon size={20} />
                 <span style={{ fontFamily:"var(--mono)", fontSize:".64rem", letterSpacing:".1em" }}>{label}</span>
