@@ -810,7 +810,7 @@ function Contact() {
   const links = [
     { Icon: Github,   label: "GITHUB",   href: "https://github.com/kkk0813" },
     { Icon: Linkedin, label: "LINKEDIN", href: "https://www.linkedin.com/in/khong-kok-kin-45495b37b/" },
-    { Icon: Mail,     label: "EMAIL",    href: "mailto:khongkokkin0@gmail.com" },
+    { Icon: Mail,     label: "EMAIL",    href: "https://mail.google.com/mail/?view=cm&to=khongkokkin0@gmail.com" },
   ];
   return (
     <section id="contact" className="section-pad" style={{ background:"rgba(0,255,157,.018)" }}>
@@ -824,7 +824,7 @@ function Contact() {
           <p style={{ color:"rgba(224,224,224,.65)", fontSize:"1rem", lineHeight:1.75, marginBottom:24 }}>
             Final year CS student targeting SWE &amp; Network Security internships. Let's connect and build something great together.
           </p>
-          <a href="mailto:khongkokkin0@gmail.com" style={{ textDecoration:"none" }}>
+          <a href="https://mail.google.com/mail/?view=cm&to=khongkokkin0@gmail.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration:"none" }}>
             <button className="btn-g" style={{ width:"100%" }}>&gt;&nbsp;SEND_MESSAGE</button>
           </a>
         </div>
