@@ -4,6 +4,7 @@ import {
   TrendingUp, Globe, ChevronDown, Code2, Wifi,
   Music2, ShoppingBag, Terminal, Target,
 } from "lucide-react";
+import VisitorWidget from './VisitorWidget';
 
 /* ─────────────────────────  GLOBAL STYLES  ───────────────────────── */
 const GlobalStyles = () => (
@@ -246,6 +247,64 @@ const GlobalStyles = () => (
       .section-pad { padding:48px 14px; }
       .btn-g, .btn-c { padding:9px 16px; font-size:.76rem; }
     }
+
+    /* Tooltip */
+    .tooltip-wrap {
+        position: relative;
+        display: inline-block;
+        cursor: help;
+    }
+    .tooltip-wrap .tooltip-box {
+        display: none;
+        position: absolute;
+        bottom: 140%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: normal;
+        width: 220px;
+        background: var(--bg2);
+        border: 1px solid rgba(0,255,157,.25);
+        color: rgba(224,224,224,.6);
+        font-family: var(--mono);
+        font-size: .66rem;
+        line-height: 1.7;
+        padding: 10px 12px;
+        border-radius: 3px;
+        z-index: 300;
+        pointer-events: none;
+    }
+    .tooltip-wrap:hover .tooltip-box {
+        display: block;
+    }
+
+    /* Privacy tooltip */
+    .privacy-trigger {
+        position: relative;
+        display: inline-block;
+        cursor: help;
+    }
+    .privacy-trigger .tooltip {
+        display: none;
+        position: absolute;
+        bottom: 140%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: normal;
+        width: 220px;
+        background: var(--bg2);
+        border: 1px solid rgba(0,255,157,.25);
+        color: rgb(209, 209, 209);
+        font-family: var(--mono);
+        font-size: .66rem;
+        line-height: 1.7;
+        padding: 10px 12px;
+        border-radius: 3px;
+        z-index: 300;
+        pointer-events: none;
+    }
+    .privacy-trigger:hover .tooltip {
+        display: block;
+    }
   `}</style>
 );
 
@@ -470,6 +529,10 @@ function Hero() {
         <p className="fu fu-4" style={{ color: "rgba(224,224,224,.38)", fontFamily: "var(--mono)", fontSize: ".78rem", letterSpacing: ".18em", marginBottom: 44 }}>
           CS @ INTI INTERNATIONAL UNIVERSITY &nbsp;·&nbsp; NETWORKING &amp; SECURITY
         </p>
+
+        <div className="fu fu-4" style={{ marginBottom: 28 }}>
+          <VisitorWidget />
+        </div>
 
         <div className="fu fu-5" style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
           <button className="btn-g" onClick={() => go("projects")}>&gt;&nbsp;VIEW_PROJECTS</button>
@@ -858,6 +921,12 @@ function Footer() {
       <span style={{ fontFamily:"var(--mono)", color:"rgba(0,255,157,.28)", fontSize:".7rem", letterSpacing:".15em" }}>
         &copy; 2026 Khong Kok Kin &nbsp;·&nbsp; BUILT WITH REACT &nbsp;·&nbsp;
         <span style={{ color:"var(--red)" }}>♥</span>
+        <span className="privacy-trigger">
+          [PRIVACY]
+          <span className="tooltip">
+            This terminal uses ipapi.co to detect your region for educational purposes. No personal data is stored.
+          </span>
+        </span>
       </span>
     </footer>
   );
