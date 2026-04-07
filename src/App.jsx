@@ -310,10 +310,11 @@ const GlobalStyles = () => (
 
 /* ─────────────────────────  DATA  ───────────────────────── */
 const ROLES = [
-  "Networking & Security Engineer",
+  "Networking & Security Student",
   "Software Developer",
   "Honeypot Researcher",
   "Web3 & Blockchain Explorer",
+  "IT Network Analyst @ MNC",
 ];
 
 const PROJECTS = [
@@ -590,7 +591,7 @@ function About() {
             <p style={{ color:"var(--amber)" }}>
               SWE_Internship.txt &nbsp; NetSec_Internship.txt
             </p>
-            <p style={{ color:"rgba(0,255,157,.5)", marginTop:10 }}>[ STATUS: OPEN TO OFFERS ✓ ]</p>
+            <p style={{ color:"rgba(0,255,157,.5)", marginTop:10 }}>[ STATUS: INCOMING INTERN @ MNC // JUN 2025 ]</p>
           </div>
         </div>
 
@@ -882,7 +883,7 @@ function Contact() {
 
         <div className="term pulse reveal" style={{ padding:36, marginBottom:28 }}>
           <p style={{ fontFamily:"var(--mono)", color:"var(--green)", fontSize:".8rem", marginBottom:10 }}>
-            &gt; echo "Open to internship opportunities"
+            &gt; echo "Incoming IT Network Analyst Intern"
           </p>
           <p style={{ color:"rgba(224,224,224,.65)", fontSize:"1rem", lineHeight:1.75, marginBottom:24 }}>
             Final year CS student targeting SWE &amp; Network Security internships. Let's connect and build something great together.
